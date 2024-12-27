@@ -1,0 +1,24 @@
+.headerMenu__list {
+  --headerMenuListGap: 4rem;
+  --headerMenuListPaddingTop: 4rem;
+  --headerMenuListItemFontFamily: "Roboto-Regular";
+  --headerMenuListItemFontSize: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  gap: var(--headerMenuListGap);
+  padding-top: var(--headerMenuListPaddingTop);
+  margin: 0;
+
+  &__item {
+    list-style: none;
+
+    a {
+      font-size: var(--headerMenuListItemFontSize);
+      text-decoration: none;
+      font-family: var(--headerMenuListItemFontFamily);
+      letter-spacing: 2px;
+      color: var(--colorCream);
+    }
+  }
+}

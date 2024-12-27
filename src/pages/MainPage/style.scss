@@ -1,0 +1,21 @@
+.mainPage__header {
+  --mainPageHeaderTitleMarginLeft: -15rem;
+  --mainPageHeaderTitleMarginTop: 25%;
+  --mainPageHeaderTitleFontSize: 6rem;
+  --mainPageHeaderTitleFontFamily: "Roboto-Medium";
+  --mainPageHeaderTitleMaxWidth: 100rem;
+  --mainPageHeaderTitleMarginLeft: -15rem;
+  --sectionTitleMaxWidth: 100rem;
+
+  height: 100vh;
+  background: url("../../../public/assets/headerBackground1.jpg") no-repeat;
+  background-position: 50% 20%;
+  background-size: 100%;
+
+  &__title {
+    margin-left: var(--mainPageHeaderTitleMarginLeft);
+    position: relative;
+    margin-top: var(--mainPageHeaderTitleMarginTop);
+    max-width: var(--sectionTitleMaxWidth);
+  }
+}

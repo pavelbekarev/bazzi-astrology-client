@@ -2,3 +2,24 @@ html {
   font: var(--baseFontWeight) var(--baseFontSize) / var(--baseLineHeight)
     var(--baseFontFamily);
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1200px;
+}
+
+.sectionTitle {
+  --sectionTitleFontSize: 6rem;
+  --sectionTitleFontFamily: "Roboto-Medium";
+  position: relative;
+  font-size: var(--sectionTitleFontSize);
+  font-family: var(--sectionTitleFontFamily);
+  font-weight: 100;
+}

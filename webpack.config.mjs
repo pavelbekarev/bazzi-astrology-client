@@ -62,6 +62,10 @@ export default async (env, { mode }) => {
     module: {
       rules: [
         {
+          test: /\.(jpg|png|svg|jpeg|gif)$/,
+          type: "asset/resource",
+        },
+        {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
           use: {
@@ -127,6 +131,8 @@ export default async (env, { mode }) => {
         "#pages": path.resolve(__dirname, "src/pages"),
         "#widgets": path.resolve(__dirname, "src/widgets"),
         "#app": path.resolve(__dirname, "src/app"),
+        "#fonts": path.resolve(__dirname, "public/fonts"),
+        "#assets": path.resolve(__dirname, "public/assets"),
       },
       extensions: [".js", ".ts", ".tsx", ".scss", ".css"],
     },

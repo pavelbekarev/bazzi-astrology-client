@@ -4,4 +4,4 @@ build/
 public/
 **/*.*
 !**/*.css
-!**/*.pcss
+!**/*.scss

@@ -1,0 +1,41 @@
+@keyframes bgAnimated {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 50% 70%;
+  }
+
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.servicesApp {
+  position: relative;
+  background: rgb(89, 75, 51);
+  background: linear-gradient(
+    135deg,
+    rgba(89, 75, 51, 1) 12%,
+    rgba(112, 94, 64, 1) 37%,
+    rgba(42, 100, 83, 1) 63%,
+    rgba(32, 77, 64, 1) 88%
+  );
+  background-size: 200% 200%;
+  animation: bgAnimated 5s infinite alternate;
+  padding-bottom: 3rem;
+
+  &__title {
+    text-align: center;
+    padding: 10rem 0;
+  }
+
+  &__serviceWrapper {
+    display: grid;
+    width: 100%;
+    aspect-ratio: 1 / 1.5;
+    grid-template-areas: "item1 item2 item3";
+    gap: 10rem;
+  }
+}
