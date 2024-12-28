@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { ModalManager } from "#shared/lib/plugins/modalManager";
 
 /**
  *
  */
 export const ServiceList = ({ services }) => {
+  useEffect(() => {
+    new ModalManager({
+      selector: "[data-js-service-item-button]",
+      info: services,
+    });
+  }, []);
+
   return (
     <>
       {services.map((service, key) => (
