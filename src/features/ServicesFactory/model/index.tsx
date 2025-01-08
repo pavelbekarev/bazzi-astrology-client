@@ -28,6 +28,7 @@ export class ServiceFactory {
     this.button = document.querySelector(this.selectors.serviceItemButton);
 
     if (this.selector) {
+      console.debug(this.selector);
       ServiceFactory.renderServices({ info: services }, this.selector);
       this.bindEvents();
     }
@@ -35,6 +36,7 @@ export class ServiceFactory {
 
   static renderServices({ info }, target) {
     const root = ReactDOM.createRoot(target);
+    console.debug(root);
 
     root.render(<ServiceList services={info} />);
   }

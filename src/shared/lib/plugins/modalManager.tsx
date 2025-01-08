@@ -1,3 +1,6 @@
+import React, { ReactNode } from "react";
+import ReactDOM from "react-dom/client";
+import { ModalWindowComponent } from "#features/ModalWindow/index";
 import { getAttr } from "#shared/utils/getAttr";
 import { ServiceData } from "#shared/utils/types/ServiceData";
 
@@ -59,7 +62,18 @@ export class ModalManager {
     }
   }
 
+  private createModalWindowNode() {
+    if (!document.getElementById("modalInstance")) {
+      const modalInstance = document.createElement("div");
+      modalInstance.setAttribute("id", "modalInstance");
+
+      const body = document.getElementById("root");
+      body.appendChild(modalInstance);
+    } else return;
+  }
+
   private openModalWindow(key: any) {
+    this.createModalWindowNode();
     if (this.info) {
       const targetValue = this.info[key];
 
@@ -69,6 +83,21 @@ export class ModalManager {
       }
 
       //TODO: выводить модальное окно с информацией об услуге
+      const root = document.getElementById("modalInstance");
+      if (root) {
+        this.renderModalWindow(root, { info: targetValue });
+      } else {
+        console.warn("Элемент с id 'root' не найден");
+      }
+    } else {
+      console.warn(
+        "Не был передан массив с информацией. Модальное окно не может быть открыто"
+      );
     }
+  }
+
+  private renderModalWindow(target: HTMLElement, info: any) {
+    const root = ReactDOM.createRoot(target);
+    root.render(<ModalWindowComponent info={[info]} />);
   }
 }
