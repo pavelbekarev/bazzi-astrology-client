@@ -2,6 +2,7 @@ import React from "react";
 import { HeaderMenu } from "#shared/ui/HeaderMenu/index";
 import { SectionTitle } from "#shared/ui/SectionTitle";
 import { ServicesApp } from "#widgets/ServicesApp";
+import { FormManager } from "#features/FormManager";
 
 /**
  *
@@ -23,6 +24,9 @@ export const MainPage = () => {
       </header>
       <main>
         <ServicesApp />
+        <section className={"formManagerWrapper"}>
+          <FormManager />
+        </section>
       </main>
     </>
   );

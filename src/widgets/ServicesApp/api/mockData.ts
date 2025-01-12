@@ -8,7 +8,7 @@ import newYear from "#assets/newYear.jpg";
 import flowerImage from "#assets/flowerImage.jpg";
 import pinkFlowers from "#assets/pinkFlowers.jpg";
 import pinkSea from "#assets/pinkSea.jpg";
-import { ServiceData } from "#shared/utils/types/ServiceData";
+import { ServiceData } from "#shared/utils/types/ServiceDataType";
 
 export const services: ServiceData[] = [
   {

@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { ModalWindowComponent } from "#features/ModalWindow/index";
 import { getAttr } from "#shared/utils/getAttr";
-import { ServiceData } from "#shared/utils/types/ServiceData";
+import { ServiceData } from "#shared/utils/types/ServiceDataType";
 
 /**
  * Менеджер управления модальными окнами
@@ -12,9 +12,15 @@ export class ModalManager {
 
   selectors = {
     serviceWrapper: "[data-js-service-wrapper]",
+    modalWindowInstance: "[data-js-modal-window]",
+    modalWindowPrice: "[data-js-price]",
   };
 
   selector: any;
+
+  isModalWindowOpen: boolean;
+
+  ignoreCloseModalWindow: boolean;
 
   info: ServiceData[] | undefined;
 
@@ -23,14 +29,17 @@ export class ModalManager {
       return ModalManager.instance;
     }
 
+    this.ignoreCloseModalWindow = false;
     this.selector = selector;
     this.info = info;
+    this.isModalWindowOpen = false;
 
     if (!selector) {
-      console.debug("Нет кнопки с необходимым атрибутом");
+      console.error("Нет кнопки с необходимым атрибутом");
     }
 
     ModalManager.instance = this;
+
     this.bindEvents();
   }
 
@@ -43,29 +52,56 @@ export class ModalManager {
   }
 
   private bindEvents() {
+    /* 
+      Клик по кнопке "Подробнее" для открытия модального окна 
+    */
     const wrapper = document.querySelector(this.selectors.serviceWrapper);
+
     if (wrapper) {
       wrapper.addEventListener("click", (event: { target: any }) => {
         const target = (event.target as HTMLElement).closest(this.selector);
 
         if (target) {
-          console.debug(
-            "Клик произошел по кнопке `Подробнее!` Пора открывать модальное окно!!!!",
-            target
-          );
+          this.ignoreCloseModalWindow = true;
+
           const attr = getAttr(this.selector);
           const key = target.getAttribute(attr);
 
           this.openModalWindow(key);
+          this.isModalWindowOpen = true;
+
+          setTimeout(() => {
+            this.ignoreCloseModalWindow = false;
+          }, 100);
         }
       });
     }
+
+    const rootNode = document.getElementById("root");
+    rootNode.addEventListener("click", (event: { target: any }) => {
+      if (this.ignoreCloseModalWindow) {
+        return;
+      }
+      const target = (event.target as HTMLElement).closest(
+        this.selectors.modalWindowInstance
+      );
+      if (!target) {
+        this.closeModalWindow();
+        this.isModalWindowOpen = false;
+      }
+    });
+  }
+
+  private closeModalWindow() {
+    const modalInstance = document.getElementById("modalInstance");
+    if (modalInstance) modalInstance.remove();
   }
 
   private createModalWindowNode() {
     if (!document.getElementById("modalInstance")) {
       const modalInstance = document.createElement("div");
       modalInstance.setAttribute("id", "modalInstance");
+      modalInstance.classList.add("modalInstance");
 
       const body = document.getElementById("root");
       body.appendChild(modalInstance);
@@ -77,17 +113,23 @@ export class ModalManager {
     if (this.info) {
       const targetValue = this.info[key];
 
+      // если targetValue не найден
       if (!targetValue) {
         // TODO: выводить модальное окно с ошибкой (услуга не найдена)
         console.error("Услуга не найдена");
       }
 
-      //TODO: выводить модальное окно с информацией об услуге
+      // выводим модальное окно с информацией об услуге
       const root = document.getElementById("modalInstance");
       if (root) {
         this.renderModalWindow(root, { info: targetValue });
       } else {
         console.warn("Элемент с id 'root' не найден");
+      }
+
+      const modalWindowNode = document.getElementById("modalWindow");
+      if (modalWindowNode) {
+        modalWindowNode.classList.add("modalWindow--active");
       }
     } else {
       console.warn(
