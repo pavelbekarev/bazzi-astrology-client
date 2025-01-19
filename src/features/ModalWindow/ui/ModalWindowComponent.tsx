@@ -4,12 +4,9 @@ import React from "react";
  *
  */
 export const ModalWindowComponent = ({ info }: { info?: any }) => {
-  const { name, descriptionAfter, description_points, price, format } =
+  const { name, descriptionAfter, descriptionPoints, price, format } =
     info[0].info;
 
-  description_points.map((item: string) => {
-    console.debug(item);
-  });
   const handleClickPrice = () => {
     const modalWindowPrice = document.querySelector("[data-js-price]");
     modalWindowPrice.classList.add("modalWindow__price--active");
@@ -24,7 +21,7 @@ export const ModalWindowComponent = ({ info }: { info?: any }) => {
       >
         <h2 className={"modalWindow__title"}>{name}</h2>
         <ul className={"modalWindow__descriptionList"}>
-          {description_points.map((item: string, key: any) => {
+          {descriptionPoints.map((item: string, key: any) => {
             return (
               <li
                 key={key}

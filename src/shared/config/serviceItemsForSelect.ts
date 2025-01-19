@@ -1,3 +1,11 @@
-import { services } from "#widgets/ServicesApp/api/mockData";
+import { StoreService } from "#shared/lib/services/StoreService";
 
-export const ServiceItems = [...services.map((item) => item.name)];
+/**
+ *
+ */
+export function getServiceItems() {
+  const storeService = StoreService.getInstance("mainStorage");
+  const services = storeService.getServiceList();
+
+  return [...services.map((item) => item.name)];
+}

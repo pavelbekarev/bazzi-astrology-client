@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { FormManagerUI } from "#features/FormManager/ui";
+import { StoreService } from "#shared/lib/services/StoreService";
 import { HeaderMenu } from "#shared/ui/HeaderMenu/index";
 import { SectionTitle } from "#shared/ui/SectionTitle";
 import { ServicesApp } from "#widgets/ServicesApp";
-import { FormManager } from "#features/FormManager";
 
 /**
  *
  */
 export const MainPage = () => {
   var titleText = "Познай себя сквозь призму китайской метафизики";
-
   return (
     <>
       <header className={"mainPage__header"}>
@@ -25,7 +25,7 @@ export const MainPage = () => {
       <main>
         <ServicesApp />
         <section className={"formManagerWrapper"}>
-          <FormManager />
+          <FormManagerUI />
         </section>
       </main>
     </>

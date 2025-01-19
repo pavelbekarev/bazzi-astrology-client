@@ -1,1 +1,1 @@
-export { FormManager } from "./ui/index.tsx";
+export { FormManagerUI as FormManager } from "./ui/index.tsx";

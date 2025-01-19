@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 
 import { getAttr } from "#shared/utils/getAttr";
 import { services } from "#widgets/ServicesApp/api/mockData";
+import { getServices, postService } from "../api";
 import { ServiceList } from "../ui";
+import { StoreService } from "#shared/lib/services/StoreService";
+import { ServiceData } from "#shared/utils/types/ServiceDataType";
 
 /**
  * генерация карточек для сервисов
@@ -19,18 +22,61 @@ export class ServiceFactory {
 
   selector: any;
 
+  services: any;
+
+  storeService: StoreService;
+
   button: any;
 
+  flag: boolean;
+
   constructor() {
+    this.flag = false;
     if (ServiceFactory.instance) return ServiceFactory.instance;
+
+    this.storeService = StoreService.getInstance("mainStorage");
 
     this.selector = document.querySelector(this.selectors.serviceWrapper);
     this.button = document.querySelector(this.selectors.serviceItemButton);
 
-    if (this.selector) {
-      console.debug(this.selector);
-      ServiceFactory.renderServices({ info: services }, this.selector);
-      this.bindEvents();
+    this.init();
+  }
+
+  private async init() {
+    try {
+      await this.fetchServices();
+      console.debug("Services fetched:", this.services);
+
+      this.flag = this.services && this.services.length > 0;
+
+      if (!this.flag) {
+        console.debug("here");
+        await postService({ data: services });
+      }
+
+      if (this.storeService.getServiceList().length === 0)
+        this.services.forEach((item: ServiceData) => {
+          console.debug("2");
+          this.storeService.updateStore("setServiceList", item);
+        });
+
+      console.debug(this.storeService.getServiceList());
+
+      if (this.selector && this.flag) {
+        ServiceFactory.renderServices({ info: this.services }, this.selector);
+        this.bindEvents();
+      }
+    } catch (error) {
+      console.error("Error during initialization:", error);
+    }
+  }
+
+  async fetchServices() {
+    try {
+      const response = await getServices();
+      this.services = response.data; // Сохраняем данные
+    } catch (error) {
+      console.error("Error fetching services:", error);
     }
   }
 

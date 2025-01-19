@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { CustomSelect } from "#shared/ui/CustomSelect";
+import React, { useState } from "react";
+import { ServiceItems } from "#shared/config/serviceItemsForSelect";
 import { SectionTitle } from "#shared/ui/SectionTitle";
 import { BookServiceConfig } from "../config/types/BookServiceConfig";
-import { getAttr } from "#shared/utils/getAttr";
-import { UniversalBookingForm } from "./UniversalBookingForm";
 
 /**
  *
@@ -14,6 +12,7 @@ export const BookService = ({ config }: { config: BookServiceConfig }) => {
   const [serviceName, setServiceName] = useState<string>();
 
   const { info } = config;
+  console.debug("itemsForSelect", info.itemsForSelect);
 
   return (
     <>
@@ -21,8 +20,7 @@ export const BookService = ({ config }: { config: BookServiceConfig }) => {
         extraClasses={["formManager__bookService__title"]}
         text={"Записаться на разбор"}
       />
-      <UniversalBookingForm info={info} />
-      {/* <form data-js-form={""} className={"formManager__bookService__form"}>
+      <form data-js-form={""} className={"formManager__bookService__form"}>
         <div
           data-js-user-name={"userName"}
           className={"formManager__bookService__form__label"}
@@ -50,7 +48,27 @@ export const BookService = ({ config }: { config: BookServiceConfig }) => {
           className={"formManager__bookService__form__label"}
         >
           <label htmlFor={"serviceName"}>Название услуги</label>
-          <CustomSelect />
+          <select
+            className={"formManager__bookService__form__label__select"}
+            name={"serviceName"}
+            id={"serviceName"}
+            onChange={(e) => setServiceName(e.target.value)}
+          >
+            {info.itemsForSelect.map((item, key) => {
+              return (
+                <option
+                  className={
+                    "formManager__bookService__form__label__select__option"
+                  }
+                  key={key}
+                  value={item.toString()}
+                  data-js-option-item={""}
+                >
+                  {item.toString()}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <button
           data-js-submit-button={JSON.stringify({
@@ -63,7 +81,7 @@ export const BookService = ({ config }: { config: BookServiceConfig }) => {
         >
           Записаться
         </button>
-      </form> */}
+      </form>
     </>
   );
 };

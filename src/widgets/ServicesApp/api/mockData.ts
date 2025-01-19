@@ -1,11 +1,11 @@
+import chineseBook from "#assets/chineseBook.jpg";
+import flowerImage from "#assets/flowerImage.jpg";
 import forecast from "#assets/forecast.jpg";
 import goldenDragon from "#assets/gold_dragon.jpg";
 import health2 from "#assets/health2.jpg";
 import imageLove from "#assets/imageLove.jpg";
 import loveTree from "#assets/love_tree.jpg";
-import chineseBook from "#assets/chineseBook.jpg";
 import newYear from "#assets/newYear.jpg";
-import flowerImage from "#assets/flowerImage.jpg";
 import pinkFlowers from "#assets/pinkFlowers.jpg";
 import pinkSea from "#assets/pinkSea.jpg";
 import { ServiceData } from "#shared/utils/types/ServiceDataType";
