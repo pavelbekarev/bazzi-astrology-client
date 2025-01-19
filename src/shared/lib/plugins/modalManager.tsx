@@ -14,6 +14,7 @@ export class ModalManager {
     serviceWrapper: "[data-js-service-wrapper]",
     modalWindowInstance: "[data-js-modal-window]",
     modalWindowPrice: "[data-js-price]",
+    closeModalButton: "[data-js-close-modal]",
   };
 
   selector: any;
@@ -85,9 +86,42 @@ export class ModalManager {
       const target = (event.target as HTMLElement).closest(
         this.selectors.modalWindowInstance
       );
+
       if (!target) {
         this.closeModalWindow();
         this.isModalWindowOpen = false;
+      }
+
+      const closeByButton = (event.target as HTMLElement).closest(
+        this.selectors.closeModalButton
+      );
+
+      if (closeByButton) {
+        closeByButton.classList.add("closeButton");
+        this.closeModalWindow();
+        this.isModalWindowOpen = false;
+      }
+    });
+
+    rootNode.addEventListener("mouseover", (event) => {
+      const closeByButton = (event.target as HTMLElement).closest(
+        this.selectors.closeModalButton
+      );
+
+      if (closeByButton) {
+        closeByButton.classList.add("hovered");
+        console.debug("hovered on close button");
+      }
+    });
+
+    rootNode.addEventListener("mouseout", (event) => {
+      const closeByButton = (event.target as HTMLElement).closest(
+        this.selectors.closeModalButton
+      );
+
+      if (closeByButton) {
+        closeByButton.classList.remove("hovered");
+        console.debug("mouse out from close button");
       }
     });
   }

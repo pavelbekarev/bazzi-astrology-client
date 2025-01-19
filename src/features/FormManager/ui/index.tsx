@@ -14,8 +14,8 @@ export const FormManagerUI = () => {
 
   return (
     <div className={"formManager container"}>
-      <ContactMe />
       <div className={"formManager__bookService"} data-js-form-container />
+      <ContactMe />
     </div>
   );
 };

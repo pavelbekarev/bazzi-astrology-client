@@ -19,6 +19,7 @@ export const ModalWindowComponent = ({ info }: { info?: any }) => {
         className={"modalWindow"}
         id={"modalWindow"}
       >
+        <span data-js-close-modal={""} className={"closeButton"}></span>
         <h2 className={"modalWindow__title"}>{name}</h2>
         <ul className={"modalWindow__descriptionList"}>
           {descriptionPoints.map((item: string, key: any) => {

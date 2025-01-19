@@ -14,7 +14,7 @@
 .formManager {
   --formWidth: 121.25rem;
   --formHeight: 95.5rem;
-  --formTitleFontSize: 6rem;
+  --formTitleFontSize: 5rem;
   display: flex;
   flex-direction: row;
   width: var(--formWidth);
@@ -50,9 +50,10 @@
         border: 1px #fff solid;
         border-radius: 11rem;
         padding: 1rem;
-        width: 15%;
+        width: 10%;
         height: 100%;
         transition: all 0.3s ease;
+        aspect-ratio: 1 / 0.4;
 
         &:hover {
           background-color: #fff;
@@ -73,7 +74,7 @@
     border-radius: 0 1rem 1rem 0;
 
     &__title {
-      font-size: 5rem;
+      font-size: var(--formTitleFontSize);
     }
 
     &__form {
@@ -138,6 +139,35 @@
           transition: all 0.3s ease;
         }
       }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .formManager {
+    --formTitleFontSize: 3rem;
+    width: 90%;
+  }
+}
+
+@media (max-width: 730px) {
+  .formManager {
+    --formHeight: 80rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .formManager {
+    flex-direction: column;
+
+    &__contactMe {
+      width: 100%;
+      padding: 3rem 0;
+    }
+
+    &__bookService {
+      width: 100%;
+      padding: 3rem 0;
     }
   }
 }

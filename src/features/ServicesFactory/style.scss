@@ -11,7 +11,7 @@
   height: 100%;
   border: 1px solid var(--colorSilver);
   gap: 2rem;
-  padding: 0 2rem;
+  padding: 1.5rem 2rem;
   border-radius: var(--serviceItemBorderRadius);
   overflow: hidden;
 
@@ -48,5 +48,31 @@
     &:hover {
       color: var(--colorPlatinum);
     }
+  }
+}
+
+@media (max-width: 900px) {
+  .servicesApp__serviceWrapper__serviceItem {
+    width: auto;
+    --serviceItemTitleFontSize: 2.5rem;
+    --serviceItemDescriptionFontSize: 1.75rem;
+
+    &__shortDescription {
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .servicesApp__serviceWrapper__serviceItem {
+    --serviceItemTitleFontSize: 2rem;
+    --serviceItemDescriptionFontSize: 1.5rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .servicesApp__serviceWrapper__serviceItem {
+    --serviceItemTitleFontSize: 2.5rem;
+    --serviceItemDescriptionFontSize: 1.75rem;
   }
 }

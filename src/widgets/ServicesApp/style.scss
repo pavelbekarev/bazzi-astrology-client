@@ -13,6 +13,9 @@
 }
 
 .servicesApp {
+  --servicesAppSerivceWrapperWidth: 100%;
+  --servicesAppSerivceWrapperTemplateAreas: "item1 item2 item3";
+
   position: relative;
   background: rgb(89, 75, 51);
   background: linear-gradient(
@@ -33,9 +36,29 @@
 
   &__serviceWrapper {
     display: grid;
-    width: 100%;
-    aspect-ratio: 1 / 1.5;
-    grid-template-areas: "item1 item2 item3";
+    width: var(--servicesAppSerivceWrapperWidth);
+    // aspect-ratio: 1 / 1.5;
+    grid-template-areas: var(--servicesAppSerivceWrapperTemplateAreas);
     gap: 10rem;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 1285px) {
+  .servicesApp {
+    --servicesAppSerivceWrapperWidth: 90%;
+    // --servicesAppSerivceWrapperTemplateAreas: "item1 item2" "item3 item4";
+  }
+}
+
+@media (max-width: 900px) {
+  .servicesApp {
+    --servicesAppSerivceWrapperTemplateAreas: "item1 item2";
+  }
+}
+
+@media (max-width: 500px) {
+  .servicesApp {
+    --servicesAppSerivceWrapperTemplateAreas: "item1";
   }
 }

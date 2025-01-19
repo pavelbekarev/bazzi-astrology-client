@@ -19,3 +19,34 @@
     max-width: var(--sectionTitleMaxWidth);
   }
 }
+
+/* адаптивные стили */
+@media (max-width: 1400px) {
+  .mainPage__header {
+    --mainPageHeaderTitleMarginLeft: 0;
+    --mainPageHeaderTitleMarginTop: 30%;
+  }
+}
+
+@media (max-width: 890px) {
+  .mainPage__header {
+    --mainPageHeaderTitleMarginTop: 40%;
+  }
+}
+
+@media (max-width: 520px) {
+  .sectionTitle {
+    --sectionTitleFontSize: 4rem;
+  }
+
+  .mainPage__header {
+    background-size: 150%;
+    --mainPageHeaderTitleMarginTop: 90%;
+  }
+}
+
+@media (max-width: 375px) {
+  .mainPage__header {
+    background-size: 180%;
+  }
+}

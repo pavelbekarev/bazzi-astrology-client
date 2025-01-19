@@ -11,7 +11,7 @@
   .modalWindow {
     --modalWindowDisplay: flex;
     --modalWindowBorderRadius: 2rem;
-    --modalWindowPadding: 5rem;
+    --modalWindowPadding: 15rem 2rem;
     --modalWindowWidth: 100rem;
     --modalWindowHeight: 60rem;
     --modalWindowTextColor: var(--colorSilver);
@@ -25,7 +25,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    padding: 15rem 2rem;
+    padding: var(--modalWindowPadding);
     border-radius: var(--modalWindowBorderRadius);
     border: 1rem #543 solid;
     overflow: auto;
@@ -68,6 +68,55 @@
     &__format {
       font-size: 2rem;
       font-weight: 300;
+    }
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 5%;
+  right: 6%;
+  font-size: 1.25rem;
+  padding: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.closeButton::before {
+  content: "Закрыть";
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: opacity 0.3s ease;
+}
+
+.closeButton.hovered::before {
+  opacity: 1;
+}
+
+.closeButton::after {
+  content: "关闭";
+  opacity: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: opacity 0.3s ease;
+}
+
+.closeButton.hovered::after {
+  opacity: 0;
+}
+
+@media (max-width: 900px) {
+  .modalInstance {
+    .modalWindow {
+      --modalWindowPadding: 6rem 1rem;
+      width: var(--modalWindowWidth);
+      --modalWindowWidth: 90%;
     }
   }
 }
