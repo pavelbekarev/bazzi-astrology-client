@@ -1,9 +1,9 @@
-import { Entries } from "../interfaces/Entries";
+import { FormField } from "../interfaces/formFieldsConstants";
 
 export type FormManagerConfig = {
   method: string;
   apiEndPoint: string;
   info: {
-    entries: Entries[];
+    entries: FormField[];
   };
 };

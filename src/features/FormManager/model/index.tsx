@@ -1,12 +1,12 @@
+/* eslint-disable no-restricted-imports */
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { FormManagerConfig } from "#features/FormManager/config/types/FormManagerConfigType";
-import { getServiceItems } from "#shared/config/serviceItemsForSelect";
 import { StoreService } from "#shared/lib/services/StoreService";
 import { getAttr } from "#shared/utils/getAttr";
+import { configAdvance } from "../config/constants";
 import { checkFormOnValidation } from "../lib/checkValidation";
 import { BookService } from "../ui/BookService";
-import { configAdvance, configSimple } from "../config/constants";
 
 /**
  * Класс для генерации формы
@@ -43,6 +43,14 @@ export class FormManager {
     const formContainer = document.querySelector(this.selectors.formContainer);
 
     // TODO: пока так, в перспективе сделать передачу customConfig по дефолту, если нет конфиг не указан
+    configAdvance.info.entries.map((item) => {
+      if (item.type === "select") {
+        item.options = this.storeService
+          .getServiceList()
+          .map((item) => item.name);
+        console.debug(item.options);
+      }
+    });
     this.generateFormManager({
       config: configAdvance,
       target: formContainer as HTMLElement,
@@ -91,7 +99,7 @@ export class FormManager {
     config: FormManagerConfig;
     target: HTMLElement;
   }) {
-    const { method, apiEndPoint, info } = config;
+    const { info } = config;
     this.entries = info.entries;
 
     if (target === null) {
