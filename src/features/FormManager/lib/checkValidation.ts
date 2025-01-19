@@ -1,13 +1,14 @@
 /**
- *
+ * Проверка на валидность данных в форме
  */
-export const checkFormOnValidation = (info: any): Boolean => {
-  const { userName, tgName, serviceName } = info;
+export const checkFormOnValidation = (info: Record<string, any>): boolean => {
+  const allFieldsFilled = Object.keys(info).every((field) => {
+    const isFieldFilled = info[field] !== null && info[field] !== "";
+    if (!isFieldFilled) {
+      console.error(`Поле "${field}" не заполнено.`);
+    }
+    return isFieldFilled;
+  });
 
-  if (!userName || !tgName || !serviceName) {
-    console.warn("Все поля обязательны к заполнению");
-    return false;
-  } else {
-    return true;
-  }
+  return allFieldsFilled;
 };

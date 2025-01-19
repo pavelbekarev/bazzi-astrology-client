@@ -31,9 +31,7 @@ export class FormManager {
     this.storeService = storeService;
 
     this.initFormManager();
-    document.addEventListener("DOMContentLoaded", () => {
-      this.bindEvents();
-    });
+    this.bindEvents();
   }
 
   /**
@@ -60,34 +58,33 @@ export class FormManager {
   private handleSubmitForm(e: any) {
     e.preventDefault();
 
-    if (e.submitter.closest(this.selectors.form)) {
-      const submitButtonNode = document.querySelector(
-        this.selectors.submitButton
-      );
-      const value = JSON.parse(
-        submitButtonNode.getAttribute(getAttr(this.selectors.submitButton))
-      );
+    const submitButtonNode = document.querySelector(
+      this.selectors.submitButton
+    );
+    const value = JSON.parse(
+      submitButtonNode.getAttribute(getAttr(this.selectors.submitButton))
+    );
 
-      if (submitButtonNode) {
-        if (checkFormOnValidation(value)) {
-          const { userName, tgName, serviceName } = value;
+    const flag = checkFormOnValidation(value);
+    console.debug(flag);
 
-          /* TODO: вместо ручного сбора вызывать функцию this.grabEntries(); */
-          const formData = new FormData();
-          formData.append("userName", userName);
-          formData.append("tgName", tgName);
-          formData.append("serviceName", serviceName);
-        }
-      } else {
-        return;
+    if (submitButtonNode) {
+      if (checkFormOnValidation(value)) {
+        this.grabEntries(value);
       }
     } else {
-      return;
+      console.error("Необходимо заполнить все поля");
     }
   }
 
   // TODO: сбор информации с точек входа
-  private grabEntries(entries) {}
+  private grabEntries(value) {
+    const formData = new FormData();
+
+    Object.keys(value).every((field) => {
+      console.debug(field);
+    });
+  }
 
   /**
    * Генерация формы
