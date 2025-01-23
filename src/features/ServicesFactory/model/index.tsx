@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-restricted-imports */
+import React from "react";
 import ReactDOM from "react-dom/client";
 
+import { StoreService } from "#shared/lib/services/StoreService";
 import { getAttr } from "#shared/utils/getAttr";
+import { ServiceData } from "#shared/utils/types/ServiceDataType";
 import { services } from "#widgets/ServicesApp/api/mockData";
 import { getServices, postService } from "../api";
 import { ServiceList } from "../ui";
-import { StoreService } from "#shared/lib/services/StoreService";
-import { ServiceData } from "#shared/utils/types/ServiceDataType";
 
 /**
  * генерация карточек для сервисов

@@ -25,11 +25,13 @@ export class ModalManager {
 
   info: ServiceData[] | undefined;
 
+  /**
+   *
+   * @param selector элемент, при взаимодействии с которым будет всплывать модальное окно
+   * @param info информация, необходимая для отображения в модальном окне
+   * @returns
+   */
   constructor({ selector, info }: { selector?: any; info?: any } = {}) {
-    if (ModalManager.instance) {
-      return ModalManager.instance;
-    }
-
     this.ignoreCloseModalWindow = false;
     this.selector = selector;
     this.info = info;
