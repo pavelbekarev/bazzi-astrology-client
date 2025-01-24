@@ -29,16 +29,18 @@ export class ServiceFactory {
 
   button: any;
 
+  private mode: string;
+
   flag: boolean;
 
-  constructor() {
+  constructor({ mode }) {
     this.flag = false;
-    if (ServiceFactory.instance) return ServiceFactory.instance;
 
     this.storeService = StoreService.getInstance("mainStorage");
 
     this.selector = document.querySelector(this.selectors.serviceWrapper);
     this.button = document.querySelector(this.selectors.serviceItemButton);
+    this.mode = mode;
 
     this.init();
   }
@@ -64,7 +66,7 @@ export class ServiceFactory {
       console.debug(this.storeService.getServiceList());
 
       if (this.selector && this.flag) {
-        ServiceFactory.renderServices({ info: this.services }, this.selector);
+        this.renderServices({ info: this.services }, this.selector);
         this.bindEvents();
       }
     } catch (error) {
@@ -81,11 +83,11 @@ export class ServiceFactory {
     }
   }
 
-  static renderServices({ info }, target) {
+  private renderServices({ info }, target) {
     const root = ReactDOM.createRoot(target);
     console.debug(root);
 
-    root.render(<ServiceList services={info} />);
+    root.render(<ServiceList services={info} mode={this.mode} />);
   }
 
   private bindEvents() {

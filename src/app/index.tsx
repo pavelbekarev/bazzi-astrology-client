@@ -1,12 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { StoreService } from "#shared/lib/services/StoreService.ts";
-import App from "./app.tsx";
 import "./styles.js";
-import { FormManager } from "#features/FormManager/model/index.tsx";
+import { BrowserRouter, Route, Routes } from "react-router";
+import { AdminPage } from "#pages/AdminPage/index.ts";
+import { MainPage } from "#pages/MainPage/index.ts";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+
+root.render(
+  <BrowserRouter>
+    <Routes>
+      <Route path={"/"} element={<MainPage />} />
+      <Route path={"/admin"} element={<AdminPage />} />
+    </Routes>
+  </BrowserRouter>
+);
 
 window.App = {};
 window.App.MainStore = StoreService.getInstance("mainStorage");

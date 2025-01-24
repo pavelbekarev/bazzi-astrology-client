@@ -1,13 +1,15 @@
 /* eslint-disable no-restricted-imports */
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBooking } from "#features/FormManager/api";
+import {
+  configAdvance,
+  configEditService,
+} from "#features/FormManager/config/constants";
 import { FormManagerConfig } from "#features/FormManager/config/types/FormManagerConfigType";
+import { BookService } from "#features/FormManager/ui/BookService";
 import { StoreService } from "#shared/lib/services/StoreService";
 import { getAttr } from "#shared/utils/getAttr";
-import { createBooking } from "../api";
-import { configAdvance } from "../config/constants";
-
-import { BookService } from "../ui/BookService";
 
 /**
  * Класс для генерации формы
@@ -26,10 +28,19 @@ export class FormManager {
 
   config: FormManagerConfig;
 
+  private mode: string;
+
   entries: any;
 
-  constructor({ storeService }: { storeService: StoreService }) {
+  constructor({
+    storeService,
+    mode,
+  }: {
+    storeService: StoreService;
+    mode: string;
+  }) {
     this.storeService = storeService;
+    this.mode = mode;
 
     this.initFormManager();
     this.bindEvents();
@@ -50,8 +61,12 @@ export class FormManager {
         console.debug(item.options);
       }
     });
+
+    if (this.mode === "admin") this.config = configEditService;
+    if (this.mode === "user") this.config = configAdvance;
+
     this.generateFormManager({
-      config: configAdvance,
+      config: this.config,
       target: formContainer as HTMLElement,
     });
   }
@@ -129,6 +144,7 @@ export class FormManager {
   }) {
     const { info } = config;
     this.entries = info.entries;
+    console.debug(this.entries);
 
     if (target === null) {
       console.error("Необходимо выбрать где разместить форму");
@@ -136,13 +152,23 @@ export class FormManager {
     }
     const root = ReactDOM.createRoot(target);
 
-    root.render(
-      <BookService
-        config={{
-          info: { entries: this.entries },
-        }}
-      />
-    );
+    if (this.mode === "user")
+      root.render(
+        <BookService
+          config={{
+            info: { title: "Записаться на разбор", entries: this.entries },
+          }}
+        />
+      );
+
+    if (this.mode === "admin")
+      root.render(
+        <BookService
+          config={{
+            info: { title: "Записаться на услугу", entries: this.entries },
+          }}
+        />
+      );
   }
 
   private bindEvents() {

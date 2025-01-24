@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ModalWindowComponent } from "#features/ModalWindow/index";
 import { getAttr } from "#shared/utils/getAttr";
 import { ServiceData } from "#shared/utils/types/ServiceDataType";
+import { ModalWindowAdminPage } from "#features/ModalWindow/ui/ModalWindowAdminPage";
 
 /**
  * Менеджер управления модальными окнами
@@ -25,17 +26,24 @@ export class ModalManager {
 
   info: ServiceData[] | undefined;
 
+  private mode: string;
+
   /**
    *
    * @param selector элемент, при взаимодействии с которым будет всплывать модальное окно
    * @param info информация, необходимая для отображения в модальном окне
    * @returns
    */
-  constructor({ selector, info }: { selector?: any; info?: any } = {}) {
+  constructor({
+    selector,
+    info,
+    mode,
+  }: { selector?: any; info?: any; mode?: string } = {}) {
     this.ignoreCloseModalWindow = false;
     this.selector = selector;
     this.info = info;
     this.isModalWindowOpen = false;
+    this.mode = mode;
 
     if (!selector) {
       console.error("Нет кнопки с необходимым атрибутом");
@@ -176,6 +184,12 @@ export class ModalManager {
 
   private renderModalWindow(target: HTMLElement, info: any) {
     const root = ReactDOM.createRoot(target);
-    root.render(<ModalWindowComponent info={[info]} />);
+    console.debug(this.mode);
+
+    if (this.mode === "user")
+      root.render(<ModalWindowComponent info={[info]} />);
+
+    if (this.mode === "admin")
+      root.render(<ModalWindowAdminPage mode={"admin"} />);
   }
 }

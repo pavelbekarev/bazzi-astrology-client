@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { FormManager } from "#shared/lib/plugins/formManager";
 import { StoreService } from "#shared/lib/services/StoreService";
-import { ContactMe } from "./ContactMe";
 
 /**
- * Визуальное представление формы
+ *
  */
-export const FormManagerUI = ({ mode }) => {
+export const ModalWindowAdminPage = ({ mode }) => {
   useEffect(() => {
+    console.debug("mode", mode);
     new FormManager({
       storeService: StoreService.getInstance("mainStorage"),
       mode: mode,
@@ -15,9 +15,13 @@ export const FormManagerUI = ({ mode }) => {
   }, []);
 
   return (
-    <div className={"formManager container"}>
-      <div className={"formManager__bookService"} data-js-form-container />
-      <ContactMe />
-    </div>
+    <>
+      <div
+        data-js-modal-window={""}
+        className={"modalWindow"}
+        id={"modalWindow"}
+        data-js-form-container={""}
+      />
+    </>
   );
 };

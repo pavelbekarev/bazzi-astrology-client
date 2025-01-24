@@ -41,6 +41,18 @@ export class StoreService {
     return this.store.getState().services;
   }
 
+  getUserName() {
+    return this.store.getState().userName;
+  }
+
+  getTgName() {
+    return this.store.getState().tgName;
+  }
+
+  getServiceName() {
+    return this.store.getState().serviceName;
+  }
+
   updateStore(action: string, payload: any) {
     const actionFunction = this.actionMap[action];
 

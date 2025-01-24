@@ -22,6 +22,7 @@
     max-height: 80rem;
     height: var(--modalWindowHeight);
     top: 50%;
+    width: var(--modalWindowWidth);
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
@@ -68,6 +69,12 @@
     &__format {
       font-size: 2rem;
       font-weight: 300;
+    }
+
+    &__saveBtn {
+      display: flex;
+      justify-content: center;
+      align-content: center;
     }
   }
 }

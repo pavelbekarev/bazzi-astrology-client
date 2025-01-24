@@ -6,9 +6,9 @@ import { SectionTitle } from "#shared/ui/SectionTitle";
 /**
  *
  */
-export const ServicesApp = () => {
+export const ServicesApp = ({ mode }) => {
   useEffect(() => {
-    new ServiceFactory();
+    new ServiceFactory({ mode: mode });
   }, []);
 
   return (

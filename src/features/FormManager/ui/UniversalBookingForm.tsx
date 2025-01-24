@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { StoreService } from "#shared/lib/services/StoreService";
 
 /**
  *
  */
 export const UniversalBookingForm = ({ info }) => {
   const { entries } = info;
+
+  const storeService = StoreService.getInstance("mainStorage");
 
   const [formData, setFormData] = useState<{ [key: string]: string }>(
     entries.reduce(

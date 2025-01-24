@@ -1,14 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ModalManager } from "#shared/lib/plugins/modalManager";
 
 /**
  *
  */
-export const ServiceList = ({ services }) => {
+export const ServiceList = ({
+  services,
+  mode,
+}: {
+  services: any;
+  mode: string;
+}) => {
+  const [userMode, setUserMode] = useState<string>("user");
+
+  const submitBtnText = () => {
+    switch (userMode) {
+      case "user":
+        return "Подробнее";
+
+      case "admin":
+        return "Редактировать";
+
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
+    setUserMode(mode);
+
     new ModalManager({
       selector: "[data-js-service-item-button]",
       info: services,
+      mode: mode,
     });
   }, []);
 
@@ -46,7 +70,7 @@ export const ServiceList = ({ services }) => {
               className={"servicesApp__serviceWrapper__serviceItem__button"}
               data-js-service-item-button={key}
             >
-              Подробнее
+              {submitBtnText()}
             </span>
           </div>
         );

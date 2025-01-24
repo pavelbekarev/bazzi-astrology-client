@@ -24,4 +24,53 @@ const configAdvance: FormManagerConfig = {
   },
 };
 
-export { configAdvance, configSimple };
+const configEditService: FormManagerConfig = {
+  method: "put",
+  apiEndPoint: "api/",
+  info: {
+    entries: [
+      {
+        name: "name",
+        nameRus: "Название услуги",
+        type: "text",
+      },
+      {
+        name: "shortDescription",
+        nameRus: "Краткое описание услуги",
+        type: "text",
+      },
+      {
+        name: "description",
+        nameRus: "Описание услуги",
+        type: "text",
+      },
+      {
+        name: "descriptionPoints",
+        nameRus: "Что в себя включает услуга",
+        type: "textarea",
+      },
+      {
+        name: "descriptionAfter",
+        nameRus: "Описание после",
+        type: "text",
+      },
+      {
+        name: "imagePath",
+        nameRus: "Фотография",
+        type: "file",
+      },
+      {
+        name: "format",
+        nameRus: "Формат услуги",
+        type: "text",
+      },
+      {
+        name: "price",
+        nameRus: "Стоимость услуги",
+        type: "text",
+      },
+    ],
+  },
+};
+
+export { configAdvance, configEditService, configSimple };

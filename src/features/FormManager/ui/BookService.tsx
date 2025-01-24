@@ -13,7 +13,7 @@ export const BookService = ({ config }: { config: BookServiceConfig }) => {
     <>
       <SectionTitle
         extraClasses={["formManager__bookService__title"]}
-        text={"Записаться на разбор"}
+        text={info.title}
       />
       <UniversalBookingForm info={info} />
     </>

@@ -1,24 +1,52 @@
-.headerMenu__list {
-  --headerMenuListGap: 4rem;
-  --headerMenuListPaddingTop: 4rem;
-  --headerMenuListItemFontFamily: "Roboto-Regular";
-  --headerMenuListItemFontSize: 2rem;
+.headerMenuWithTitle {
+  --headerMenuPaddingTop: 4rem;
+  --headerMenuTitleColor: var(--colorSilver);
+  --headerMenuTitleLetterSpacing: 0.5rem;
+  --headerMenuTitleFontSize: 3rem;
   display: flex;
   flex-direction: row;
-  justify-content: right;
-  gap: var(--headerMenuListGap);
-  padding-top: var(--headerMenuListPaddingTop);
-  margin: 0;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--headerMenuPaddingTop);
+}
 
-  &__item {
-    list-style: none;
+.headerMenu {
+  --headerMenuPaddingTop: 4rem;
+  --headerMenuTitleColor: var(--colorSilver);
+  --headerMenuTitleLetterSpacing: 0.5rem;
+  --headerMenuTitleFontSize: 3rem;
 
-    a {
-      font-size: var(--headerMenuListItemFontSize);
-      text-decoration: none;
-      font-family: var(--headerMenuListItemFontFamily);
-      letter-spacing: 2px;
-      color: var(--colorCream);
+  padding-top: var(--headerMenuPaddingTop);
+
+  &__title {
+    font-size: var(--headerMenuTitleFontSize);
+    color: var(--headerMenuTitleColor);
+    font-weight: 300;
+    font-family: "Roboto-Medium";
+    letter-spacing: var(--headerMenuTitleLetterSpacing);
+  }
+
+  &__list {
+    --headerMenuListGap: 4rem;
+    --headerMenuListItemFontFamily: "Roboto-Regular";
+    --headerMenuListItemFontSize: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: var(--headerMenuListGap);
+
+    margin: 0;
+
+    &__item {
+      list-style: none;
+
+      a {
+        font-size: var(--headerMenuListItemFontSize);
+        text-decoration: none;
+        font-family: var(--headerMenuListItemFontFamily);
+        letter-spacing: 2px;
+        color: var(--colorCream);
+      }
     }
   }
 }
