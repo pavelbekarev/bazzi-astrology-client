@@ -37,7 +37,10 @@
 .formManager {
   --formWidth: 121.25rem;
   --formHeight: 95.5rem;
-  --formTitleFontSize: 5rem;
+  --formUserTitleFontSize: 5rem;
+  --formAdminTitleFontSize: 3rem;
+  --formBookServiceWidth: 70%;
+  --formContactMeWidth: 30%;
   display: flex;
   flex-direction: row;
   width: var(--formWidth);
@@ -50,7 +53,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
-    width: 30%;
+    width: var(--formContactMeWidth);
     background-color: var(--colorBrunswickGreen);
     border-radius: 0rem 1rem 1rem 0rem;
 
@@ -91,13 +94,25 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    width: var(--formBookServiceWidth);
     background-color: var(--colorPlatinum);
     gap: 3rem;
     border-radius: 1rem 0rem 0rem 1rem;
 
-    &__title {
-      font-size: var(--formTitleFontSize);
+    &__userTitle {
+      span {
+        font-size: var(--formUserTitleFontSize);
+      }
+    }
+
+    &__adminForm {
+      margin: 0 auto;
+    }
+
+    &__adminTitle {
+      span {
+        font-size: var(--formAdminTitleFontSize);
+      }
     }
 
     &__form {

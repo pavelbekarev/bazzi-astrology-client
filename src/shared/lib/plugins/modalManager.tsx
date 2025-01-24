@@ -186,10 +186,23 @@ export class ModalManager {
     const root = ReactDOM.createRoot(target);
     console.debug(this.mode);
 
-    if (this.mode === "user")
-      root.render(<ModalWindowComponent info={[info]} />);
+    // if (this.mode === "user")
+    //   root.render(<ModalWindowComponent info={[info]} />);
 
-    if (this.mode === "admin")
-      root.render(<ModalWindowAdminPage mode={"admin"} />);
+    // if (this.mode === "admin")
+    //   root.render(<ModalWindowAdminPage mode={"admin"} />);
+
+    switch (this.mode) {
+      case "user":
+        root.render(<ModalWindowComponent info={[info]} />);
+        break;
+
+      case "admin":
+        root.render(<ModalWindowAdminPage mode={"admin"} />);
+        break;
+
+      default:
+        break;
+    }
   }
 }

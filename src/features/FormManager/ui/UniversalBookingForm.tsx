@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { StoreService } from "#shared/lib/services/StoreService";
+import React, { useState } from "react";
 
 /**
  *
  */
-export const UniversalBookingForm = ({ info }) => {
+export const UniversalBookingForm = ({
+  info,
+  extraClasses,
+  extraAttrs,
+}: {
+  info: any;
+  extraClasses?: any;
+  extraAttrs?: any;
+}) => {
   const { entries } = info;
-
-  const storeService = StoreService.getInstance("mainStorage");
 
   const [formData, setFormData] = useState<{ [key: string]: string }>(
     entries.reduce(
@@ -33,9 +38,10 @@ export const UniversalBookingForm = ({ info }) => {
       [id]: value,
     }));
   };
-
   return (
-    <form className={"formManager__bookService__form"}>
+    <form
+      className={`formManager__bookService__form ${extraClasses.join(" ")}`}
+    >
       {entries.map((item: any, key: any) => {
         const dataJsAttr = "data-js-" + item.name;
 

@@ -155,6 +155,7 @@ export class FormManager {
     if (this.mode === "user")
       root.render(
         <BookService
+          extraClasses={["formManager__bookService__userTitle"]}
           config={{
             info: { title: "Записаться на разбор", entries: this.entries },
           }}
@@ -164,8 +165,9 @@ export class FormManager {
     if (this.mode === "admin")
       root.render(
         <BookService
+          extraClasses={["modalWindow__title"]}
           config={{
-            info: { title: "Записаться на услугу", entries: this.entries },
+            info: { title: "Редактировать услугу", entries: this.entries },
           }}
         />
       );

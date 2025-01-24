@@ -6,16 +6,22 @@ import { BookServiceConfig } from "../config/types/BookServiceConfig";
 /**
  *
  */
-export const BookService = ({ config }: { config: BookServiceConfig }) => {
+export const BookService = ({
+  config,
+  extraClasses,
+}: {
+  config: BookServiceConfig;
+  extraClasses?: any;
+}) => {
   const { info } = config;
 
   return (
     <>
-      <SectionTitle
-        extraClasses={["formManager__bookService__title"]}
-        text={info.title}
+      <SectionTitle extraClasses={[extraClasses.join(" ")]} text={info.title} />
+      <UniversalBookingForm
+        extraClasses={["formManager__bookService__adminForm"]}
+        info={info}
       />
-      <UniversalBookingForm info={info} />
     </>
   );
 };
