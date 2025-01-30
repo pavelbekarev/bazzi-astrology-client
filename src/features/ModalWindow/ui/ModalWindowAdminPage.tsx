@@ -5,12 +5,12 @@ import { StoreService } from "#shared/lib/services/StoreService";
 /**
  *
  */
-export const ModalWindowAdminPage = ({ mode }) => {
+export const ModalWindowAdminPage = ({ operation }: { operation?: any }) => {
   useEffect(() => {
-    console.debug("mode", mode);
+    console.debug("operation", operation);
     new FormManager({
       storeService: StoreService.getInstance("mainStorage"),
-      mode: mode,
+      operation: operation,
     });
   }, []);
 

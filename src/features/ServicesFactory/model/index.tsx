@@ -85,7 +85,6 @@ export class ServiceFactory {
 
   private renderServices({ info }, target) {
     const root = ReactDOM.createRoot(target);
-    console.debug(root);
 
     root.render(<ServiceList services={info} mode={this.mode} />);
   }

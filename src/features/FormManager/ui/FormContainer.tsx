@@ -14,6 +14,7 @@ export const BookService = ({
   extraClasses?: any;
 }) => {
   const { info } = config;
+  console.debug("bookService", info);
 
   return (
     <>

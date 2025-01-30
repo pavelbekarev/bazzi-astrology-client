@@ -1,13 +1,15 @@
 /* eslint-disable no-restricted-imports */
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBooking } from "#features/FormManager/api";
+import { ApiClient } from "#features/FormManager/api/ApiClient";
 import {
-  configAdvance,
+  configViewService,
   configEditService,
+  validationRulesForBookingService,
+  configCreateService,
 } from "#features/FormManager/config/constants";
 import { FormManagerConfig } from "#features/FormManager/config/types/FormManagerConfigType";
-import { BookService } from "#features/FormManager/ui/BookService";
+import { BookService } from "#features/FormManager/ui/FormContainer";
 import { StoreService } from "#shared/lib/services/StoreService";
 import { getAttr } from "#shared/utils/getAttr";
 
@@ -26,21 +28,25 @@ export class FormManager {
 
   storeService: StoreService;
 
-  config: FormManagerConfig;
+  private config: FormManagerConfig;
 
-  private mode: string;
+  private operation: string;
 
-  entries: any;
+  private entries: any;
+
+  private apiEndPoint: string;
 
   constructor({
     storeService,
-    mode,
+    operation,
   }: {
     storeService: StoreService;
-    mode: string;
+    operation?: string;
   }) {
     this.storeService = storeService;
-    this.mode = mode;
+    this.operation = operation;
+    this.apiEndPoint = "";
+    console.debug(operation, "operation");
 
     this.initFormManager();
     this.bindEvents();
@@ -53,17 +59,21 @@ export class FormManager {
     const formContainer = document.querySelector(this.selectors.formContainer);
 
     // TODO: пока так, в перспективе сделать передачу customConfig по дефолту, если нет конфиг не указан
-    configAdvance.info.entries.map((item) => {
+    configViewService.info.entries.map((item) => {
+      console.debug(item);
       if (item.type === "select") {
         item.options = this.storeService
           .getServiceList()
           .map((item) => item.name);
         console.debug(item.options);
       }
+
+      if (item.name === "name") item.name = "userName";
     });
 
-    if (this.mode === "admin") this.config = configEditService;
-    if (this.mode === "user") this.config = configAdvance;
+    if (!this.operation) this.config = configViewService;
+    if (this.operation === "edit") this.config = configEditService;
+    if (this.operation === "createService") this.config = configCreateService;
 
     this.generateFormManager({
       config: this.config,
@@ -73,7 +83,6 @@ export class FormManager {
 
   private handleSubmitForm(e: any) {
     e.preventDefault();
-    this.clearValidationErrors();
 
     const submitButtonNode = document.querySelector(
       this.selectors.submitButton
@@ -85,14 +94,19 @@ export class FormManager {
 
     if (submitButtonNode) {
       if (this.checkFormOnValidation(value)) {
-        const formData = this.grabEntries(value);
+        const info = this.grabEntries(value);
 
         (async () => {
-          await createBooking({ data: formData })
+          ApiClient.getInstance({
+            method: this.config.method,
+            apiEndPoint: this.config.apiEndPoint,
+            info: info,
+          })
+            .makeRequest()
             .then((res) => {
               this.clearValues();
               this.throwSuccessMessage();
-              console.debug("Успешно отправлено");
+              console.debug("Успешно выполнено");
             })
             .catch((e) =>
               console.error("произошла ошибка при отправлении формы", e)
@@ -116,20 +130,20 @@ export class FormManager {
           input.value = "";
         }
       });
-      console.debug(inputs);
     }
   }
 
   // TODO: сбор информации с точек входа
-  private grabEntries(value): FormData {
-    const formData = new FormData();
+  private grabEntries(value) {
+    const result = {};
 
     const fields = Object.keys(value);
     fields.forEach((item) => {
-      formData.append(item, value[item]);
+      console.debug(item, value[item]);
+      result[item] = value[item];
     });
 
-    return formData;
+    return result;
   }
 
   /**
@@ -152,7 +166,7 @@ export class FormManager {
     }
     const root = ReactDOM.createRoot(target);
 
-    if (this.mode === "user")
+    if (!this.operation)
       root.render(
         <BookService
           extraClasses={["formManager__bookService__userTitle"]}
@@ -162,12 +176,28 @@ export class FormManager {
         />
       );
 
-    if (this.mode === "admin")
+    if (this.operation === "edit")
       root.render(
         <BookService
           extraClasses={["modalWindow__title"]}
           config={{
-            info: { title: "Редактировать услугу", entries: this.entries },
+            info: {
+              title: "Редактировать услугу",
+              entries: this.entries,
+            },
+          }}
+        />
+      );
+
+    if (this.operation === "createService")
+      root.render(
+        <BookService
+          extraClasses={["modalWindow__title"]}
+          config={{
+            info: {
+              title: "Добавить услугу",
+              entries: this.entries,
+            },
           }}
         />
       );
@@ -175,43 +205,6 @@ export class FormManager {
 
   private bindEvents() {
     document.addEventListener("submit", (e) => this.handleSubmitForm(e));
-    document.addEventListener("input", (e) => this.handleFieldInput(e));
-  }
-
-  private clearValidationErrors() {
-    const errorNodes = document.querySelectorAll(".error-message");
-    errorNodes.forEach((node) => node.remove());
-
-    const errorFields = document.querySelectorAll(".validationError");
-    errorFields.forEach((field) => field.classList.remove("validationError"));
-  }
-
-  private handleFieldInput(e: Event) {
-    const target = e.target as HTMLInputElement | HTMLSelectElement;
-    const fieldName = target.getAttribute("data-js-field");
-
-    if (fieldName) {
-      const validationRules = {
-        userName: (value: string) =>
-          value.length >= 3 ||
-          "Имя пользователя должно содержать минимум 3 символа.",
-        tgName: (value: string) =>
-          value.startsWith("@") || "Имя Telegram должно начинаться с @.",
-        serviceName: (value: string) =>
-          value !== "" || "Необходимо выбрать услугу.",
-      };
-
-      const validate = validationRules[fieldName];
-      if (validate) {
-        const validationResult = validate(target.value);
-        if (validationResult !== true) {
-          this.throwValidationError(target as HTMLElement, validationResult);
-        } else {
-          this.clearFieldValidationError(target as HTMLElement);
-          this.throwSuccessMessage();
-        }
-      }
-    }
   }
 
   private throwSuccessMessage() {
@@ -228,13 +221,8 @@ export class FormManager {
 
     setTimeout(() => {
       successNode.classList.remove("successMessage--visible");
+      successNode.remove();
     }, 2000);
-  }
-
-  private clearFieldValidationError(target: HTMLElement) {
-    target.classList.remove("validationError");
-    const errorNode = target.parentElement?.querySelector(".error-message");
-    if (errorNode) errorNode.remove();
   }
 
   private throwValidationError = (
@@ -262,25 +250,16 @@ export class FormManager {
 
     setTimeout(() => {
       errorNode.classList.remove("errorMessage--visible");
+      errorNode.remove();
     }, 2000);
   };
 
   private checkFormOnValidation = (info: Record<string, any>): boolean => {
-    const validationRules = {
-      name: (value: string) =>
-        value.length >= 3 ||
-        "Имя пользователя должно содержать минимум 3 символа.",
-      tgName: (value: string) =>
-        value.startsWith("@") || "Имя Telegram должно начинаться с @.",
-      serviceName: (value: string) =>
-        value !== "" || "Необходимо выбрать услугу.",
-    };
-
     let isValid = true;
 
     Object.keys(info).forEach((field) => {
       const fieldValue = info[field];
-      const validate = validationRules[field];
+      const validate = validationRulesForBookingService[field];
 
       if (validate) {
         const validationResult = validate(fieldValue);
@@ -289,8 +268,6 @@ export class FormManager {
           const fieldNode = document.querySelector(`[data-js-${field}]`);
           this.throwValidationError(fieldNode as HTMLElement, validationResult);
           isValid = false;
-        } else {
-          console.debug("Успешно!");
         }
       }
     });

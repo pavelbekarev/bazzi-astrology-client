@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-restricted-imports */
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { ModalWindowComponent } from "#features/ModalWindow/index";
+import { ModalWindowAdminPage } from "#features/ModalWindow/ui/ModalWindowAdminPage";
 import { getAttr } from "#shared/utils/getAttr";
 import { ServiceData } from "#shared/utils/types/ServiceDataType";
-import { ModalWindowAdminPage } from "#features/ModalWindow/ui/ModalWindowAdminPage";
 
 /**
  * Менеджер управления модальными окнами
@@ -14,7 +15,6 @@ export class ModalManager {
   selectors = {
     serviceWrapper: "[data-js-service-wrapper]",
     modalWindowInstance: "[data-js-modal-window]",
-    modalWindowPrice: "[data-js-price]",
     closeModalButton: "[data-js-close-modal]",
   };
 
@@ -26,10 +26,12 @@ export class ModalManager {
 
   info: ServiceData[] | undefined;
 
-  private mode: string;
+  buttonMode: string;
+
+  submitBtnType: string;
 
   /**
-   *
+   * Менеджер модальных окон
    * @param selector элемент, при взаимодействии с которым будет всплывать модальное окно
    * @param info информация, необходимая для отображения в модальном окне
    * @returns
@@ -37,13 +39,13 @@ export class ModalManager {
   constructor({
     selector,
     info,
-    mode,
   }: { selector?: any; info?: any; mode?: string } = {}) {
     this.ignoreCloseModalWindow = false;
     this.selector = selector;
     this.info = info;
     this.isModalWindowOpen = false;
-    this.mode = mode;
+    this.buttonMode = "";
+    this.submitBtnType = "";
 
     if (!selector) {
       console.error("Нет кнопки с необходимым атрибутом");
@@ -64,32 +66,75 @@ export class ModalManager {
 
   private bindEvents() {
     /* 
-      Клик по кнопке "Подробнее" для открытия модального окна 
+      Здесь происходит отслеживание клика по кнопке "Подробнее"/"Редактировать",
+      но при условии, что эта кнопка находится в узле [data-js-service-wrapper]
+
     */
-    const wrapper = document.querySelector(this.selectors.serviceWrapper);
+    // const wrapper = document.querySelector(this.selectors.serviceWrapper);
 
-    if (wrapper) {
-      wrapper.addEventListener("click", (event: { target: any }) => {
-        const target = (event.target as HTMLElement).closest(this.selector);
+    // if (wrapper) {
+    //   wrapper.addEventListener("click", (event: { target: any }) => {
+    //     const target = (event.target as HTMLElement).closest(this.selector);
 
-        if (target) {
-          this.ignoreCloseModalWindow = true;
+    //     if (target) {
+    //       console.debug(target);
+    //       this.submitBtnType = target.id;
+    //       this.ignoreCloseModalWindow = true;
 
-          const attr = getAttr(this.selector);
-          const key = target.getAttribute(attr);
+    //       const attr = getAttr(this.selector);
+    //       const key = target.getAttribute(attr);
 
-          this.openModalWindow(key);
-          this.isModalWindowOpen = true;
+    //       this.openModalWindow(key);
+    //       this.isModalWindowOpen = true;
 
-          setTimeout(() => {
-            this.ignoreCloseModalWindow = false;
-          }, 100);
-        }
-      });
-    }
+    //       setTimeout(() => {
+    //         this.ignoreCloseModalWindow = false;
+    //       }, 100);
+    //     }
+    //   });
+    // }
 
     const rootNode = document.getElementById("root");
     rootNode.addEventListener("click", (event: { target: any }) => {
+      console.debug(event.target.id);
+      switch (event.target.id) {
+        case "moreDetailsBtn":
+          this.submitBtnType = event.target.id;
+          this.ignoreCloseModalWindow = true;
+          var attr = getAttr(this.selector);
+          var key = event.target.getAttribute(attr);
+          this.openModalWindow(key, "moreDetails");
+          this.isModalWindowOpen = true;
+          setTimeout(() => {
+            this.ignoreCloseModalWindow = false;
+          }, 100);
+          break;
+
+        case "editBtn":
+          this.submitBtnType = event.target.id;
+          this.ignoreCloseModalWindow = true;
+          attr = getAttr(this.selector);
+          key = event.target.getAttribute(attr);
+          this.openModalWindow(key, "edit");
+          this.isModalWindowOpen = true;
+          setTimeout(() => {
+            this.ignoreCloseModalWindow = false;
+          }, 100);
+          break;
+
+        case "createServiceBtn":
+          this.submitBtnType = event.target.id;
+          this.ignoreCloseModalWindow = true;
+          attr = getAttr(this.selector);
+          key = event.target.getAttribute(attr);
+          this.openModalWindow(key, "createService");
+          this.isModalWindowOpen = true;
+          setTimeout(() => {
+            this.ignoreCloseModalWindow = false;
+          }, 100);
+          break;
+      }
+
       if (this.ignoreCloseModalWindow) {
         return;
       }
@@ -111,8 +156,18 @@ export class ModalManager {
         this.closeModalWindow();
         this.isModalWindowOpen = false;
       }
+
+      /**
+       * Здесь я хотел сделать отслеживание отдельной кнопки добавления услуги
+       */
+      const createServiceNode = document.querySelector(this.selector);
+      if (createServiceNode.id === "createServiceBtn")
+        console.debug(createServiceNode);
     });
 
+    /**
+     * Отслеживание наведения курсора на кнопку закрытия модального окна
+     */
     rootNode.addEventListener("mouseover", (event) => {
       const closeByButton = (event.target as HTMLElement).closest(
         this.selectors.closeModalButton
@@ -124,6 +179,9 @@ export class ModalManager {
       }
     });
 
+    /**
+     * Отслеживание прекращения наведения курсора на кнопку закрытия модального окна
+     */
     rootNode.addEventListener("mouseout", (event) => {
       const closeByButton = (event.target as HTMLElement).closest(
         this.selectors.closeModalButton
@@ -152,7 +210,7 @@ export class ModalManager {
     } else return;
   }
 
-  private openModalWindow(key: any) {
+  private openModalWindow(key: any, operation: string) {
     this.createModalWindowNode();
     if (this.info) {
       const targetValue = this.info[key];
@@ -166,7 +224,7 @@ export class ModalManager {
       // выводим модальное окно с информацией об услуге
       const root = document.getElementById("modalInstance");
       if (root) {
-        this.renderModalWindow(root, { info: targetValue });
+        this.renderModalWindow(root, { info: targetValue }, operation);
       } else {
         console.warn("Элемент с id 'root' не найден");
       }
@@ -182,24 +240,21 @@ export class ModalManager {
     }
   }
 
-  private renderModalWindow(target: HTMLElement, info: any) {
+  private renderModalWindow(target: HTMLElement, info: any, operation: string) {
     const root = ReactDOM.createRoot(target);
-    console.debug(this.mode);
 
-    // if (this.mode === "user")
-    //   root.render(<ModalWindowComponent info={[info]} />);
-
-    // if (this.mode === "admin")
-    //   root.render(<ModalWindowAdminPage mode={"admin"} />);
-
-    switch (this.mode) {
-      case "user":
+    switch (operation) {
+      case "moreDetails":
         root.render(<ModalWindowComponent info={[info]} />);
         break;
 
-      case "admin":
-        root.render(<ModalWindowAdminPage mode={"admin"} />);
+      case "edit":
+        root.render(<ModalWindowAdminPage operation={operation} />);
         break;
+
+      case "createService":
+        root.render(<ModalWindowAdminPage operation={operation} />);
+        return;
 
       default:
         break;

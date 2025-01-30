@@ -1,3 +1,23 @@
 .adminPage__header {
   background-color: var(--colorBrunswickGreen);
+
+  &__menu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 5rem 0;
+
+    &__addServiceButton {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 20%;
+      padding: 1rem 0;
+      background-color: var(--colorSilver);
+      font-size: 2rem;
+      font-family: "Roboto-Medium";
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }

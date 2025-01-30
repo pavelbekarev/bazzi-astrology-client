@@ -1,17 +1,40 @@
 import { api } from "#shared/api/axiosInstance";
 
+//TODO: переписать чтобы были универсальные методы
+// А данные брать из конфигов.
+
 /**
  *
  */
 export const createBooking = async ({ data }) => {
   try {
-    const info = {
-      userName: data.get("name"),
-      tgName: data.get("tgName"),
-      serviceName: data.get("serviceName"),
-    };
+    const { entries, apiEndPoint, formData } = data;
+    console.debug("apiEndPoint", apiEndPoint);
 
-    await api.post("booking/createBooking", info);
+    const formDataObject = {};
+    formData.forEach((value: any, key: any) => {
+      if (key === "name") key = "userName";
+      formDataObject[key] = value;
+    });
+    console.debug(formDataObject);
+
+    const info = {};
+
+    entries.forEach((item: any) => {
+      if (formDataObject[item.name]) {
+        info[item.name] = formDataObject[item.name];
+      }
+    });
+
+    Object.keys(formDataObject).forEach((key: any) => {
+      if (!info[key]) {
+        info[key] = formDataObject[key];
+      }
+    });
+
+    console.debug(info);
+
+    await api.post(apiEndPoint, info);
   } catch (e) {
     console.error(e);
   }

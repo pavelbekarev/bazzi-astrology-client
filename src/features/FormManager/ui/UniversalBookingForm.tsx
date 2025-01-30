@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 /**
  *
@@ -12,7 +12,9 @@ export const UniversalBookingForm = ({
   extraClasses?: any;
   extraAttrs?: any;
 }) => {
-  const { entries } = info;
+  const { entries, title } = info;
+
+  const [buttonText, setButtonText] = useState<string>("Записаться");
 
   const [formData, setFormData] = useState<{ [key: string]: string }>(
     entries.reduce(
@@ -38,6 +40,11 @@ export const UniversalBookingForm = ({
       [id]: value,
     }));
   };
+
+  useEffect(() => {
+    setButtonText(title);
+  }, [title]);
+
   return (
     <form
       className={`formManager__bookService__form ${extraClasses.join(" ")}`}
@@ -98,7 +105,7 @@ export const UniversalBookingForm = ({
         type={"submit"}
         className={"formManager__bookService__form__submitBtn"}
       >
-        Записаться
+        {buttonText}
       </button>
     </form>
   );

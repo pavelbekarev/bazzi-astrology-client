@@ -12,29 +12,33 @@ export const ServiceList = ({
   mode: string;
 }) => {
   const [userMode, setUserMode] = useState<string>("user");
+  const [submitBtnMode, setSubmitBtnMode] = useState<string>("");
 
   const submitBtnText = () => {
-    switch (userMode) {
-      case "user":
+    switch (submitBtnMode) {
+      case "moreDetailsBtn":
         return "Подробнее";
-
-      case "admin":
+      case "editBtn":
         return "Редактировать";
-
       default:
-        break;
+        return "";
     }
   };
 
   useEffect(() => {
     setUserMode(mode);
 
+    if (mode === "user") {
+      setSubmitBtnMode("moreDetailsBtn");
+    } else if (mode === "admin") {
+      setSubmitBtnMode("editBtn");
+    }
+
     new ModalManager({
       selector: "[data-js-service-item-button]",
       info: services,
-      mode: mode,
     });
-  }, []);
+  }, [mode, services]);
 
   return (
     <>
@@ -43,7 +47,7 @@ export const ServiceList = ({
           <div
             key={key}
             className={"servicesApp__serviceWrapper__serviceItem"}
-            data-js-service-item={""}
+            // data-js-service-item={""}
           >
             <img
               className={"servicesApp__serviceWrapper__serviceItem__image"}
@@ -67,6 +71,7 @@ export const ServiceList = ({
                 : "Здесь пусто"}
             </span>
             <span
+              id={submitBtnMode}
               className={"servicesApp__serviceWrapper__serviceItem__button"}
               data-js-service-item-button={key}
             >

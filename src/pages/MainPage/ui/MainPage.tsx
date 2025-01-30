@@ -34,7 +34,7 @@ export const MainPage = () => {
       <main>
         <ServicesApp mode={"user"} />
         <section className={"formManagerWrapper"}>
-          <FormManagerUI mode={"user"} />
+          <FormManagerUI />
         </section>
       </main>
     </>

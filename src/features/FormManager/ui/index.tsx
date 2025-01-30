@@ -6,11 +6,10 @@ import { ContactMe } from "./ContactMe";
 /**
  * Визуальное представление формы
  */
-export const FormManagerUI = ({ mode }) => {
+export const FormManagerUI = ({ operation }: { operation?: any }) => {
   useEffect(() => {
     new FormManager({
       storeService: StoreService.getInstance("mainStorage"),
-      mode: mode,
     });
   }, []);
 
